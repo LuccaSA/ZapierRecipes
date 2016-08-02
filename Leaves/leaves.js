@@ -5,6 +5,23 @@ if (process.argv.length !== 4) {
   return;
 }
 
+if (process.argv[2] === '' || process.argv[3] === '') {
+  console.log('erreur: l\'un des arguments et vide.');
+  return;
+}
+
+function getUrlBase(params) {
+  var endUrlBase = '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0';
+
+  if (!params.match('^https://')) {
+    params = 'https://' + params;
+  }
+  if (!params.match('(.ilucca.net)$')) {
+    params = params + '.ilucca.net';
+  }
+  return (params + endUrlBase);
+}
+
 var callback = function (error, success) {
 	 console.log(success);
 };
@@ -14,7 +31,7 @@ var month = today.getMonth() + 1;
 var monthS = month > 9 ? '' + month : '0' + month;
 var dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
 var todayS = yearS + '-' + monthS + '-' + dayS;
-var urlBase = process.argv[2] + '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0'
+var urlBase = getUrlBase(process.argv[2]);
 var appToken = process.argv[3];
 console.log(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 fetch(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
