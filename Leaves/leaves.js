@@ -39,18 +39,21 @@ var callback = function (error, success) {
 // Création de toutes les variables pour la date.
 
 var today = new Date();
-var yearS = '' + today.getFullYear();
-var month = today.getMonth() + 1;
-var monthS = month > 9 ? '' + month : '0' + month;
-var dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
-var todayS = yearS + '-' + monthS + '-' + dayS;
+var curDay = {};
+
+curDay.yearS = '' + today.getFullYear();
+curDay.month = today.getMonth() + 1;
+curDay.monthS = curDay.month > 9 ? '' + curDay.month : '0' + curDay.month;
+curDay.dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
+curDay.todayS = curDay.yearS + '-' + curDay.monthS + '-' + curDay.dayS;
+
 var urlBase = getUrlBase(process.argv[2]);
 var appToken = process.argv[3];
-console.log(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
+console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 
 // Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non.
 
-fetch(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
+fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
   'headers': {
     'Authorization': 'lucca application=' + appToken
   }
@@ -94,7 +97,7 @@ fetch(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,
       } else {
         curRes.detail = 'cet après-midi';
       }
-      if (curRes.leave.end !== todayS) {
+      if (curRes.leave.end !== curDay.todayS) {
         var endSp = curRes.leave.end.split('-');
         curRes.detail += ' et jusqu\'au ' + endSp[2] + '/' + endSp[1] + '/' + endSp[0] + ' inclus';
       }
