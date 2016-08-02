@@ -1,5 +1,10 @@
 var fetch = require('node-fetch');
 
+if (process.argv.length !== 4) {
+  console.log('erreur: besoin de deux arguments.');
+  return;
+}
+
 var callback = function (error, success) {
 	 console.log(success);
 };
@@ -9,8 +14,8 @@ var month = today.getMonth() + 1;
 var monthS = month > 9 ? '' + month : '0' + month;
 var dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
 var todayS = yearS + '-' + monthS + '-' + dayS;
-var urlBase = 'https://lucca.ilucca.net/api/v3/leaves?leavePeriod.ownerId=greaterthan,0'
-var appToken = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+var urlBase = process.argv[2] + '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0'
+var appToken = process.argv[3];
 console.log(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 fetch(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
   'headers': {
