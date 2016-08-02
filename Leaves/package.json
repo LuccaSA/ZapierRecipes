@@ -1,8 +1,8 @@
 {
-  "name": "test-zap",
+  "name": "zapier-recipes",
   "version": "1.0.0",
-  "description": "test zap",
-  "main": "index.js",
+  "description": "Permet de parser tous les utilisateurs et de lister ceux absents.",
+  "main": "leaves.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
