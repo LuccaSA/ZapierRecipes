@@ -1,12 +1,16 @@
+// Variable de message d'erreur.
+var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
+var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
+
 var fetch = require('node-fetch');
 
 if (process.argv.length !== 4) {
-  console.log('erreur: besoin de deux arguments.');
+  console.log(errorNotEnoughtParam);
   return;
 }
 
 if (process.argv[2] === '' || process.argv[3] === '') {
-  console.log('erreur: l\'un des arguments et vide.');
+  console.log(errorEmptyParam);
   return;
 }
 
