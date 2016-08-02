@@ -4,15 +4,21 @@ var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
 var fetch = require('node-fetch');
 
+// Vérification du bon nombre de paramètres.
+
 if (process.argv.length !== 4) {
   console.log(errorNotEnoughtParam);
   return;
 }
 
+// Vérification que les paramètres ne sont pas vide.
+
 if (process.argv[2] === '' || process.argv[3] === '') {
   console.log(errorEmptyParam);
   return;
 }
+
+// Fonction qui permet à partir du paramètre params de retourner l'url qui sera utilisé.
 
 function getUrlBase(params) {
   var endUrlBase = '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0';
@@ -29,6 +35,9 @@ function getUrlBase(params) {
 var callback = function (error, success) {
 	 console.log(success);
 };
+
+// Création de toutes les variables pour la date.
+
 var today = new Date();
 var yearS = '' + today.getFullYear();
 var month = today.getMonth() + 1;
@@ -38,6 +47,9 @@ var todayS = yearS + '-' + monthS + '-' + dayS;
 var urlBase = getUrlBase(process.argv[2]);
 var appToken = process.argv[3];
 console.log(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
+
+// Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non.
+
 fetch(urlBase + '&date=' + todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
   'headers': {
     'Authorization': 'lucca application=' + appToken
