@@ -51,9 +51,11 @@ var move = 0;
 
 if (today.toDateString().split(' ')[0] === 'Sat') {
     move = 2;
+    when = 'lundi';
 }
 if (today.toDateString().split(' ')[0] === 'Sun') {
     move = 1;
+    when = 'lundi';
 }
 
 today.setDate(today.getDate() + move);
