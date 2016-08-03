@@ -1,6 +1,6 @@
 // Fichier d'initialisation des variables de date.
 
-var getNextDate = function() {
+var getNextWorkingDate = function() {
     // Création de toutes les variables pour la date.
 
     var today = new Date();
@@ -36,3 +36,5 @@ var getNextDate = function() {
     var res = [when, curDay];
     return (res);
 };
+
+module.exports = getNextWorkingDate;

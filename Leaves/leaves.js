@@ -3,10 +3,7 @@ var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
 var fetch = require('node-fetch');
-var fs = require("fs");
-var vm = require('vm');
-
-vm.runInThisContext(fs.readFileSync(__dirname + "/date.js"));
+var getNextWorkingDate = require('./date.js');
 
 // Vérification du bon nombre de paramètres.
 
@@ -40,7 +37,7 @@ var callback = function (error, success) {
 	 console.log(success);
 };
 
-var tmp = getNextDate();
+var tmp = getNextWorkingDate();
 var when = tmp[0];
 var curDay = tmp[1];
 
