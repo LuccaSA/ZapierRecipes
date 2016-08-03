@@ -3,6 +3,7 @@ var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
 var fetch = require('node-fetch');
+var _ = require('lodash');
 
 // Vérification du bon nombre de paramètres.
 
@@ -40,6 +41,22 @@ var callback = function (error, success) {
 
 var today = new Date();
 var curDay = {};
+
+// On regarde non pas aujourd'hui mais demain.
+today.setDate(today.getDate() + 1);
+
+// Si la date tombe un dimanche on va jusqu'au lundi. (Il faudra aussi changer les messages d'erreur.)
+var when = 'demain';
+var move = 0;
+
+if (today.toDateString().split(' ')[0] === 'Sat') {
+    move = 2;
+}
+if (today.toDateString().split(' ')[0] === 'Sun') {
+    move = 1;
+}
+
+today.setDate(today.getDate() + move);
 
 curDay.yearS = '' + today.getFullYear();
 curDay.month = today.getMonth() + 1;
@@ -90,12 +107,12 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
 
     for (var i = 0; i < result.length; i++) {
       var curRes = result[i];
-      if (curRes.leave.morning && result[i].leave.afternoon) {
-        curRes.detail = 'toute la journée';
+      if (curRes.leave.morning && curRes.leave.afternoon) {
+        curRes.detail = when + ' toute la journée';
       } else if (curRes.leave.morning) {
-        curRes.detail = 'ce matin';
+        curRes.detail = when + ' matin';
       } else {
-        curRes.detail = 'cet après-midi';
+        curRes.detail = when + ' après-midi';
       }
       if (curRes.leave.end !== curDay.todayS) {
         var endSp = curRes.leave.end.split('-');
@@ -105,9 +122,14 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
     if (result.length === 0) {
       result.push({
         name: 'Personne n\'',
-        detail: 'aujourd\'hui'
+        detail: when
       });
     }
+
+    _.forEach(result, function (result) {
+      console.log(result.name + ' est absent(e) ' + result.detail);
+    });
+
     callback(null, result);
   }).catch(function (error) {
     console.log(error);
