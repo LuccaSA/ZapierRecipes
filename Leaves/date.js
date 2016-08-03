@@ -33,8 +33,6 @@ var getNextDate = function() {
     curDay.dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
     curDay.todayS = curDay.yearS + '-' + curDay.monthS + '-' + curDay.dayS;
 
-    var res = [];
-    res.when = when;
-    res.curDay = curDay;
+    var res = [when, curDay];
     return (res);
 };

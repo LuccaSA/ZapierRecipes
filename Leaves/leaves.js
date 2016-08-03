@@ -41,8 +41,8 @@ var callback = function (error, success) {
 };
 
 var tmp = getNextDate();
-var when = tmp.when;
-var curDay = tmp.curDay;
+var when = tmp[0];
+var curDay = tmp[1];
 
 var urlBase = getUrlBase(process.argv[2]);
 var appToken = process.argv[3];
