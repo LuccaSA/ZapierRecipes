@@ -1,5 +1,4 @@
-// Variable pour le lancement en local avec des paramètres, A NE PAS METTRE DANS LA RECETTE
-
+// Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
 var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
@@ -83,7 +82,7 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
       }
     }
 
-    if (result.length !== 0) {
+    if (result.lenght !== 0) {
       for (var i = 0; i < result.length; i++) {
         var curRes = result[i];
         if (curRes.leave.morning && curRes.leave.afternoon) {
@@ -93,9 +92,13 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
         } else {
           curRes.detail = when + ' après-midi';
         }
+
         if (curRes.leave.end !== curDay.todayS) {
           var endSp = curRes.leave.end.split('-');
-          curRes.detail += ' et jusqu\'au ' + endSp[2] + '/' + endSp[1] + '/' + endSp[0] + ' inclus';
+          var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
+          var numberDay = dayDiff(curDay.date, endSpDate);
+
+          curRes.detail += ' et pendant ' + numberDay + ' jours';
         }
       }
     }
@@ -109,3 +112,9 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
   }).catch(function (error) {
     console.log(error);
   });
+
+function dayDiff(d1, d2) {
+  d1 = d1.getTime() / 86400000;
+  d2 = d2.getTime() / 86400000;
+  return new Number(d2 - d1 + 2).toFixed(0);
+}
