@@ -27,6 +27,7 @@ var getNextWorkingDate = function() {
 
     today.setDate(today.getDate() + move);
 
+    curDay.date = today;
     curDay.yearS = '' + today.getFullYear();
     curDay.month = today.getMonth() + 1;
     curDay.monthS = curDay.month > 9 ? '' + curDay.month : '0' + curDay.month;
