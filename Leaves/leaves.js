@@ -1,4 +1,5 @@
-// Variable de message d'erreur.
+// Variable pour le lancement en local avec des paramètres, A NE PAS METTRE DANS LA RECETTE
+
 var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
@@ -82,21 +83,23 @@ fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,
       }
     }
 
-    for (var i = 0; i < result.length; i++) {
-      var curRes = result[i];
-      if (curRes.leave.morning && curRes.leave.afternoon) {
-        curRes.detail = when + ' toute la journée';
-      } else if (curRes.leave.morning) {
-        curRes.detail = when + ' matin';
-      } else {
-        curRes.detail = when + ' après-midi';
-      }
-      if (curRes.leave.end !== curDay.todayS) {
-        var endSp = curRes.leave.end.split('-');
-        curRes.detail += ' et jusqu\'au ' + endSp[2] + '/' + endSp[1] + '/' + endSp[0] + ' inclus';
+    if (result.length !== 0) {
+      for (var i = 0; i < result.length; i++) {
+        var curRes = result[i];
+        if (curRes.leave.morning && curRes.leave.afternoon) {
+          curRes.detail = when + ' toute la journée';
+        } else if (curRes.leave.morning) {
+          curRes.detail = when + ' matin';
+        } else {
+          curRes.detail = when + ' après-midi';
+        }
+        if (curRes.leave.end !== curDay.todayS) {
+          var endSp = curRes.leave.end.split('-');
+          curRes.detail += ' et jusqu\'au ' + endSp[2] + '/' + endSp[1] + '/' + endSp[0] + ' inclus';
+        }
       }
     }
-    if (result.length === 0) {
+    else {
       result.push({
         name: 'Personne n\'',
         detail: when
