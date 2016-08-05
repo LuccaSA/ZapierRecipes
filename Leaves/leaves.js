@@ -1,5 +1,5 @@
 // Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
-var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
+var errorNotEnoughtParam = 'erreur: besoin de deux arguments (url et token).';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
 var getNextWorkingDate = require('./date.js');
@@ -51,14 +51,11 @@ console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner
 
 var result = [];
 
-var thirdStep = function () {
+// On lance la recherche pour J+1
 
-  var tmp = getNextWorkingDate(5);
-  var when = tmp[0];
-  var curDay = tmp[1];
+request(result, secondStep, urlBase, curDay, appToken, when, -1);
 
-  request(result, callback, urlBase, curDay, appToken, when, 10);
-}
+// Puis la recherche pour J+2
 
 var secondStep = function () {
 
@@ -69,4 +66,13 @@ var secondStep = function () {
   request(result, thirdStep, urlBase, curDay, appToken, when, 5);
 };
 
-request(result, secondStep, urlBase, curDay, appToken, when, -1);
+// Et enfin la recherche pour J+5
+
+var thirdStep = function () {
+
+  var tmp = getNextWorkingDate(5);
+  var when = tmp[0];
+  var curDay = tmp[1];
+
+  request(result, callback, urlBase, curDay, appToken, when, 10);
+}
