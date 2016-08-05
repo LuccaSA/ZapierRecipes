@@ -24,11 +24,8 @@ var getNextWorkingDate = function (offsetDate) {
     var when = 'demain';
     var move = 0;
 
-    if (today.toDateString().split(' ')[0] === 'Sat') {
+    if (today.toDateString().split(' ')[0] === 'Sat' || today.toDateString().split(' ')[0] === 'Sun') {
         move = 2;
-    }
-    if (today.toDateString().split(' ')[0] === 'Sun') {
-        move = 1;
     }
 
     // Initialisation des variables de date avec les bonnes valeurs.
