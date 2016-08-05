@@ -48,4 +48,4 @@ console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner
 // Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non
 
 var result = [];
-request(result, top, urlBase, curDay, appToken, when);
+request(result, callback, urlBase, curDay, appToken, when);
