@@ -1,13 +1,13 @@
 // Fichier d'initialisation des variables de date.
 
-var getNextWorkingDate = function () {
+var getNextWorkingDate = function (offsetDate) {
     // Création de toutes les variables pour la date.
 
     var today = new Date();
     var curDay = {};
 
     // On regarde non pas aujourd'hui mais demain.
-    today.setDate(today.getDate() + 1);
+    today.setDate(today.getDate() + offsetDate);
 
     // Si la date tombe un dimanche on va jusqu'au lundi. (Il faudra aussi changer les messages d'erreur.)
 

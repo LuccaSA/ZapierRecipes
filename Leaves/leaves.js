@@ -34,7 +34,9 @@ function getUrlBase(params) {
 }
 
 var callback = function (error, success) {
-	 console.log(success);
+  for (var i = 0; i < success.length; i++) {
+    console.log(success[i].name + ' est absent(e) ' + success[i].detail);
+  }
 };
 
 var tmp = getNextWorkingDate(1);
@@ -49,13 +51,22 @@ console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner
 
 var result = [];
 
-var secondStep = function() {
+var thirdStep = function () {
 
   var tmp = getNextWorkingDate(5);
   var when = tmp[0];
-  var curDay = tmp[1]
+  var curDay = tmp[1];
 
-  request(result, callback, urlBase, curDay, appToken, when)
+  request(result, callback, urlBase, curDay, appToken, when, 10);
+}
+
+var secondStep = function () {
+
+  var tmp = getNextWorkingDate(2);
+  var when = tmp[0];
+  var curDay = tmp[1];
+
+  request(result, thirdStep, urlBase, curDay, appToken, when, 5);
 };
 
-request(result, secondStep, urlBase, curDay, appToken, when);
+request(result, secondStep, urlBase, curDay, appToken, when, -1);
