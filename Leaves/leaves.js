@@ -2,8 +2,8 @@
 var errorNotEnoughtParam = 'erreur: besoin de deux arguments.';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
-var fetch = require('node-fetch');
 var getNextWorkingDate = require('./date.js');
+var request = require('./request.js');
 
 // Vérification du bon nombre de paramètres.
 
@@ -45,76 +45,7 @@ var urlBase = getUrlBase(process.argv[2]);
 var appToken = process.argv[3];
 console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 
-// Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non.
+// Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non
 
-fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
-  'headers': {
-    'Authorization': 'lucca application=' + appToken
-  }
-})
-  .then(function (res) {
-    return res.json();
-  }).then(function (data) {
-    console.log(data);
-    var leaves = data.data.items;
-    var hash = {};
-    var result = [];
-    for (var i = 0; i < leaves.length; i++) {
-      var leave = leaves[i];
-      var username = leave.leavePeriod.owner.name;
-      var userleave = hash[username];
-      if (!userleave) {
-        userleave = {
-          morning: false,
-          afternoon: false,
-          end: leave.leavePeriod.endsOn.split('T')[0]
-        };
-        hash[username] = userleave;
-        result.push({
-          name: username,
-          leave: userleave
-        });
-      }
-      if (leave.isAM) {
-        userleave.morning = true;
-      } else {
-        userleave.afternoon = true;
-      }
-    }
-
-    if (result.lenght !== 0) {
-      for (var i = 0; i < result.length; i++) {
-        var curRes = result[i];
-        if (curRes.leave.morning && curRes.leave.afternoon) {
-          curRes.detail = when + ' toute la journée';
-        } else if (curRes.leave.morning) {
-          curRes.detail = when + ' matin';
-        } else {
-          curRes.detail = when + ' après-midi';
-        }
-
-        if (curRes.leave.end !== curDay.todayS) {
-          var endSp = curRes.leave.end.split('-');
-          var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-          var numberDay = dayDiff(curDay.date, endSpDate);
-
-          curRes.detail += ' et pendant ' + numberDay + ' jours';
-        }
-      }
-    }
-    else {
-      result.push({
-        name: 'Personne n\'',
-        detail: when
-      });
-    }
-    callback(null, result);
-  }).catch(function (error) {
-    console.log(error);
-  });
-
-function dayDiff(d1, d2) {
-  d1 = d1.getTime() / 86400000;
-  d2 = d2.getTime() / 86400000;
-  return new Number(d2 - d1 + 2).toFixed(0);
-}
+var result = [];
+request(result, top, urlBase, curDay, appToken, when);
