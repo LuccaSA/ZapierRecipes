@@ -1,6 +1,6 @@
 // Fichier d'initialisation des variables de date.
 
-var getNextWorkingDate = function() {
+var getNextWorkingDate = function () {
     // Création de toutes les variables pour la date.
 
     var today = new Date();
@@ -11,22 +11,31 @@ var getNextWorkingDate = function() {
 
     // Si la date tombe un dimanche on va jusqu'au lundi. (Il faudra aussi changer les messages d'erreur.)
 
+    var array = {
+        'Mon': 'lundi',
+        'Tue': 'mardi',
+        'Wed': 'mercredi',
+        'Thu': 'jeudi',
+        'Fri': 'vendredi',
+        'Sat': 'samedi',
+        'Sun': 'dimanche'
+    };
+
     var when = 'demain';
     var move = 0;
 
     if (today.toDateString().split(' ')[0] === 'Sat') {
         move = 2;
-        when = 'lundi';
     }
     if (today.toDateString().split(' ')[0] === 'Sun') {
         move = 1;
-        when = 'lundi';
     }
 
     // Initialisation des variables de date avec les bonnes valeurs.
 
     today.setDate(today.getDate() + move);
 
+    when = array[today.toDateString().split(' ')[0]];
     curDay.date = today;
     curDay.yearS = '' + today.getFullYear();
     curDay.month = today.getMonth() + 1;

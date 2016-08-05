@@ -5,7 +5,7 @@ var fetch = require('node-fetch');
 function dayDiff(d1, d2) {
     d1 = d1.getTime() / 86400000;
     d2 = d2.getTime() / 86400000;
-    return new Number(d2 - d1 + 2).toFixed(0);
+    return new Number(d2 - d1).toFixed(0);
 }
 
 var checkIsIn = function (result, name) {
@@ -57,12 +57,14 @@ function request(result, functionCall, urlBase, curDay, appToken, when) {
             if (result.lenght !== 0) {
                 for (var i = 0; i < result.length; i++) {
                     var curRes = result[i];
+                    var whenMsg = when + ' ' + curDay.dayS + '/' + curDay.monthS;
+
                     if (curRes.leave.morning && curRes.leave.afternoon) {
-                        curRes.detail = when + ' toute la journée';
+                        curRes.detail = whenMsg + ' toute la journée';
                     } else if (curRes.leave.morning) {
-                        curRes.detail = when + ' matin';
+                        curRes.detail = whenMsg + ' matin';
                     } else {
-                        curRes.detail = when + ' après-midi';
+                        curRes.detail = whenMsg + ' après-midi';
                     }
 
                     if (curRes.leave.end !== curDay.todayS) {
@@ -71,7 +73,7 @@ function request(result, functionCall, urlBase, curDay, appToken, when) {
                         var numberDay = dayDiff(curDay.date, endSpDate);
 
                         if (numberDay >= 0) {
-                            curRes.detail += ' et pendant ' + numberDay + ' jours';
+                            curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
                         }
                     }
                 }

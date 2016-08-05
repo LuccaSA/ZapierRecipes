@@ -37,7 +37,7 @@ var callback = function (error, success) {
 	 console.log(success);
 };
 
-var tmp = getNextWorkingDate();
+var tmp = getNextWorkingDate(1);
 var when = tmp[0];
 var curDay = tmp[1];
 
@@ -48,4 +48,14 @@ console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner
 // Permet d'obtenir la liste des personnes à vérifier et de savoir si elles sont absentes ou non
 
 var result = [];
-request(result, callback, urlBase, curDay, appToken, when);
+
+var secondStep = function() {
+
+  var tmp = getNextWorkingDate(5);
+  var when = tmp[0];
+  var curDay = tmp[1]
+
+  request(result, callback, urlBase, curDay, appToken, when)
+};
+
+request(result, secondStep, urlBase, curDay, appToken, when);
