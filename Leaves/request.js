@@ -41,42 +41,41 @@ var request = function (functionCall, curDay) {
 
             for (var i = 0; i < result.length; i++) {
                 var curRes = result[i];
+                var endSp = curRes.leave.end.split('-');
+                var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
+                var numberDay = dayDiff(curDay.date, endSpDate) + 1;
 
-                if (curRes.detail === undefined) {
-                    if (curRes.leave.morning && curRes.leave.afternoon) {
-                        curRes.detail = curDay.formatString + ' toute la journée';
-                    } else if (curRes.leave.morning) {
-                        curRes.detail = curDay.formatString + ' matin';
-                    } else {
-                        curRes.detail = curDay.formatString + ' après-midi';
-                    }
+                if (curRes.leave.morning && curRes.leave.afternoon) {
+                    curRes.detail = curDay.formatString;
+                } else if (curRes.leave.morning && numberDay === 0) {
+                    curRes.detail = curDay.formatString + ' matin';
+                } else if (curRes.leave.afternoon && numberDay === 0){
+                    curRes.detail = curDay.formatString + ' après-midi';
+                } else {
+                    curRes.detail = curDay.formatString;
+                }
 
-                    if (curRes.leave.end !== curDay.todayS) {
-                        var endSp = curRes.leave.end.split('-');
-                        var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-                        var numberDay = dayDiff(curDay.date, endSpDate);
-
-                        if (numberDay >= 0 && numberDay >= input.numberDayMinimum) {
-                            curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
-                        }
-                        if (numberDay < input.numberDayMinimum) {
-                            result.splice(i, 1);
-                            i--;
-                        }
-                    }
+                if (curRes.leave.end !== curRes.todayS) {
+                    curRes.detail += ' pendant ' + numberDay + ' jours';
+                    curRes.numberDay = numberDay;
+                }
+                else {
+                    curRes.numberDay = '0';
                 }
             }
 
             var messageSend = '';
 
             if (result.length === 0) {
-                messageSend += 'Personne ne sera absent ' + getDayString(today);
+                messageSend += 'Personne ne sera absent ' + curDay.formatString;
             }
 
             // Attention: la vérification avec le tableau des absents du jours n'a ici pas été encore mise en place
 
             for (var i = 0; i < result.length; i++) {
-                messageSend += result[i].name + ' sera absent(e) ' + result[i].detail + '\n';
+                if (result[i].numberDay >= input.numberDayMinimum) {
+                    messageSend += result[i].name + ' sera absent(e) ' + result[i].detail + '\n';
+                }
             }
 
             var resultSend = {

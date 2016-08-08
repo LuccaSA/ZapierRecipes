@@ -9,7 +9,7 @@ var input = {
 };
 
 var callback = function (error, success) {
-    console.log(success);
+    console.log(success.message);
 };
 
 // Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
