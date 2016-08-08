@@ -1,9 +1,11 @@
 // Fichier de demande de requêtes
 
-var request = function (result, functionCall, urlBase, curDay, appToken, when, dayMinimum) {
-    fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
+var request = function (functionCall, curDay) {
+
+    var result = [];
+    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
         'headers': {
-            'Authorization': 'lucca application=' + appToken
+            'Authorization': 'lucca application=' + input.appToken
         }
     })
         .then(function (res) {
@@ -42,11 +44,11 @@ var request = function (result, functionCall, urlBase, curDay, appToken, when, d
 
                 if (curRes.detail === undefined) {
                     if (curRes.leave.morning && curRes.leave.afternoon) {
-                        curRes.detail = when + ' toute la journée';
+                        curRes.detail = curDay.formatString + ' toute la journée';
                     } else if (curRes.leave.morning) {
-                        curRes.detail = when + ' matin';
+                        curRes.detail = curDay.formatString + ' matin';
                     } else {
-                        curRes.detail = when + ' après-midi';
+                        curRes.detail = curDay.formatString + ' après-midi';
                     }
 
                     if (curRes.leave.end !== curDay.todayS) {
@@ -54,10 +56,10 @@ var request = function (result, functionCall, urlBase, curDay, appToken, when, d
                         var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
                         var numberDay = dayDiff(curDay.date, endSpDate);
 
-                        if (numberDay >= 0 && numberDay >= dayMinimum) {
+                        if (numberDay >= 0 && numberDay >= input.numberDayMinimum) {
                             curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
                         }
-                        if (numberDay < dayMinimum) {
+                        if (numberDay < input.numberDayMinimum) {
                             result.splice(i, 1);
                             i--;
                         }

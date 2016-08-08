@@ -1,15 +1,20 @@
 // Fichier d'initialisation des variables de date.
 
-var getNextWorkingDate = function (offsetDate) {
+var getNextWorkingDate = function (offsetDays) {
+
     // Création de toutes les variables pour la date.
 
-    var today = new Date();
-    var curDay = {};
+    console.log(offsetDays);
 
-    // On regarde non pas aujourd'hui mais demain.
-    today.setDate(today.getDate() + offsetDate);
+    var day = new Date();
+    var nextDay = {};
 
-    // Si la date tombe un dimanche on va jusqu'au lundi. (Il faudra aussi changer les messages d'erreur.)
+    for (var i = 0; i < offsetDays; i++) {
+        day.setDate(day.getDate() + 1);
+        if (day.toDateString().split(' ')[0] === 'Sat' || day.toDateString().split(' ')[0] === 'Sun') {
+            day.setDate(day.getDate() + 2);
+        }
+    }
 
     var array = {
         'Mon': 'lundi',
@@ -21,25 +26,12 @@ var getNextWorkingDate = function (offsetDate) {
         'Sun': 'dimanche'
     };
 
-    var when = 'demain';
-    var move = 0;
-
-    if (today.toDateString().split(' ')[0] === 'Sat' || today.toDateString().split(' ')[0] === 'Sun') {
-        move = 2;
-    }
-
-    // Initialisation des variables de date avec les bonnes valeurs.
-
-    today.setDate(today.getDate() + move);
-
-    when = array[today.toDateString().split(' ')[0]];
-    curDay.date = today;
-    curDay.yearS = '' + today.getFullYear();
-    curDay.month = today.getMonth() + 1;
-    curDay.monthS = curDay.month > 9 ? '' + curDay.month : '0' + curDay.month;
-    curDay.dayS = today.getDate() > 9 ? '' + today.getDate() : '0' + today.getDate();
-    curDay.todayS = curDay.yearS + '-' + curDay.monthS + '-' + curDay.dayS;
-
-    var res = [when, curDay];
-    return (res);
+    nextDay.date = day;
+    nextDay.yearS = '' + day.getFullYear();
+    nextDay.month = day.getMonth() + 1;
+    nextDay.monthS = nextDay.month > 9 ? '' + nextDay.month : '0' + nextDay.month;
+    nextDay.dayS = day.getDate() > 9 ? '' + day.getDate() : '0' + day.getDate();
+    nextDay.todayS = nextDay.yearS + '-' + nextDay.monthS + '-' + nextDay.dayS;
+    nextDay.formatString = array[day.toDateString().split(' ')[0]];
+    return nextDay;
 };

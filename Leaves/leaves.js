@@ -15,15 +15,12 @@ function getUrlBase(params) {
   return (params + endUrlBase);
 }
 
-var tmp = getNextWorkingDate(1);
-var when = tmp[0];
-var curDay = tmp[1];
+var nextDay = getNextWorkingDate(input.offsetDays);
 var urlBase = input.url;
 var appToken = input.appToken;
-var result = [];
 
-console.log(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
+console.log(urlBase + '&date=' + nextDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 
 // On lance la recherche pour J+1
 
-request(result, callback, urlBase, curDay, appToken, when, -1);
+request(callback, nextDay);
