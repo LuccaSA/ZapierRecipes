@@ -34,9 +34,7 @@ function getUrlBase(params) {
 }
 
 var callback = function (error, success) {
-  for (var i = 0; i < success.length; i++) {
-    console.log(success[i].name + ' est absent(e) ' + success[i].detail);
-  }
+  console.log(success);
 };
 
 var tmp = getNextWorkingDate(1);
@@ -51,4 +49,4 @@ var result = [];
 
 // On lance la recherche pour J+1
 
-request(result, secondStep, urlBase, curDay, appToken, when, -1);
+request(result, callback, urlBase, curDay, appToken, when, -1);
