@@ -57,15 +57,14 @@ function request(result, functionCall, urlBase, curDay, appToken, when, dayMinim
             if (result.lenght !== 0) {
                 for (var i = 0; i < result.length; i++) {
                     var curRes = result[i];
-                    var whenMsg = when + ' (' + curDay.dayS + '/' + curDay.monthS + ')';
 
                     if (curRes.detail === undefined) {
                         if (curRes.leave.morning && curRes.leave.afternoon) {
-                            curRes.detail = whenMsg + ' toute la journée';
+                            curRes.detail = when + ' toute la journée';
                         } else if (curRes.leave.morning) {
-                            curRes.detail = whenMsg + ' matin';
+                            curRes.detail = when + ' matin';
                         } else {
-                            curRes.detail = whenMsg + ' après-midi';
+                            curRes.detail = when + ' après-midi';
                         }
 
                         if (curRes.leave.end !== curDay.todayS) {
