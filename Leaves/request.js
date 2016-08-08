@@ -37,42 +37,51 @@ var request = function (result, functionCall, urlBase, curDay, appToken, when, d
                 }
             }
 
-            if (result.lenght !== 0) {
-                for (var i = 0; i < result.length; i++) {
-                    var curRes = result[i];
+            for (var i = 0; i < result.length; i++) {
+                var curRes = result[i];
 
-                    if (curRes.detail === undefined) {
-                        if (curRes.leave.morning && curRes.leave.afternoon) {
-                            curRes.detail = when + ' toute la journée';
-                        } else if (curRes.leave.morning) {
-                            curRes.detail = when + ' matin';
-                        } else {
-                            curRes.detail = when + ' après-midi';
+                if (curRes.detail === undefined) {
+                    if (curRes.leave.morning && curRes.leave.afternoon) {
+                        curRes.detail = when + ' toute la journée';
+                    } else if (curRes.leave.morning) {
+                        curRes.detail = when + ' matin';
+                    } else {
+                        curRes.detail = when + ' après-midi';
+                    }
+
+                    if (curRes.leave.end !== curDay.todayS) {
+                        var endSp = curRes.leave.end.split('-');
+                        var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
+                        var numberDay = dayDiff(curDay.date, endSpDate);
+
+                        if (numberDay >= 0 && numberDay >= dayMinimum) {
+                            curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
                         }
-
-                        if (curRes.leave.end !== curDay.todayS) {
-                            var endSp = curRes.leave.end.split('-');
-                            var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-                            var numberDay = dayDiff(curDay.date, endSpDate);
-
-                            if (numberDay >= 0 && numberDay >= dayMinimum) {
-                                curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
-                            }
-                            if (numberDay < dayMinimum) {
-                                result.splice(i, 1);
-                                i--;
-                            }
+                        if (numberDay < dayMinimum) {
+                            result.splice(i, 1);
+                            i--;
                         }
                     }
                 }
             }
-            else {
-                result.push({
-                    name: 'Personne n\'',
-                    detail: when
-                });
+
+            var messageSend = '';
+
+            if (result.length === 0) {
+                messageSend += 'Personne ne sera absent ' + getDayString(today);
             }
-            functionCall(null, result);
+
+            // Attention: la vérification avec le tableau des absents du jours n'a ici pas été encore mise en place
+
+            for (var i = 0; i < result.length; i++) {
+                messageSend += result[i].name + ' sera absent(e) ' + result[i].detail + '\n';
+            }
+
+            var resultSend = {
+                message: messageSend
+            };
+
+            functionCall(null, resultSend);
         }).catch(function (error) {
             console.log(error);
         });
