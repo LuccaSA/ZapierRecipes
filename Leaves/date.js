@@ -43,5 +43,3 @@ var getNextWorkingDate = function (offsetDate) {
     var res = [when, curDay];
     return (res);
 };
-
-module.exports = getNextWorkingDate;
