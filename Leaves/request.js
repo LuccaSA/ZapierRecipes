@@ -1,98 +1,100 @@
 // Fichier de demande de requêtes
 
-var fetch = require('node-fetch');
+(function() {
+    var fetch = require('node-fetch');
 
-function dayDiff(d1, d2) {
-    d1 = d1.getTime() / 86400000;
-    d2 = d2.getTime() / 86400000;
-    return new Number(d2 - d1).toFixed(0);
-}
-
-var checkIsIn = function (result, name) {
-    for (var i = 0; i < result.length; i++) {
-        if (result[i].name === name) {
-            return (true);
-        }
+    function dayDiff(d1, d2) {
+        d1 = d1.getTime() / 86400000;
+        d2 = d2.getTime() / 86400000;
+        return new Number(d2 - d1).toFixed(0);
     }
-    return (false);
-}
 
-function request(result, functionCall, urlBase, curDay, appToken, when, dayMinimum) {
-    fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
-        'headers': {
-            'Authorization': 'lucca application=' + appToken
+    var checkIsIn = function (result, name) {
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].name === name) {
+                return (true);
+            }
         }
-    })
-        .then(function (res) {
-            return res.json();
-        }).then(function (data) {
-            console.log(data);
-            var leaves = data.data.items;
-            var hash = {};
-            for (var i = 0; i < leaves.length; i++) {
-                var leave = leaves[i];
-                var username = leave.leavePeriod.owner.name;
-                var userleave = hash[username];
-                if (!checkIsIn(result, username)) {
-                    if (!userleave) {
-                        userleave = {
-                            morning: false,
-                            afternoon: false,
-                            end: leave.leavePeriod.endsOn.split('T')[0]
-                        };
-                        hash[username] = userleave;
-                        result.push({
-                            name: username,
-                            leave: userleave
-                        });
-                    }
-                    if (leave.isAM) {
-                        userleave.morning = true;
-                    } else {
-                        userleave.afternoon = true;
-                    }
-                }
+        return (false);
+    }
+
+    function request(result, functionCall, urlBase, curDay, appToken, when, dayMinimum) {
+        fetch(urlBase + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
+            'headers': {
+                'Authorization': 'lucca application=' + appToken
             }
-
-            if (result.lenght !== 0) {
-                for (var i = 0; i < result.length; i++) {
-                    var curRes = result[i];
-
-                    if (curRes.detail === undefined) {
-                        if (curRes.leave.morning && curRes.leave.afternoon) {
-                            curRes.detail = when + ' toute la journée';
-                        } else if (curRes.leave.morning) {
-                            curRes.detail = when + ' matin';
+        })
+            .then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                console.log(data);
+                var leaves = data.data.items;
+                var hash = {};
+                for (var i = 0; i < leaves.length; i++) {
+                    var leave = leaves[i];
+                    var username = leave.leavePeriod.owner.name;
+                    var userleave = hash[username];
+                    if (!checkIsIn(result, username)) {
+                        if (!userleave) {
+                            userleave = {
+                                morning: false,
+                                afternoon: false,
+                                end: leave.leavePeriod.endsOn.split('T')[0]
+                            };
+                            hash[username] = userleave;
+                            result.push({
+                                name: username,
+                                leave: userleave
+                            });
+                        }
+                        if (leave.isAM) {
+                            userleave.morning = true;
                         } else {
-                            curRes.detail = when + ' après-midi';
+                            userleave.afternoon = true;
                         }
+                    }
+                }
 
-                        if (curRes.leave.end !== curDay.todayS) {
-                            var endSp = curRes.leave.end.split('-');
-                            var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-                            var numberDay = dayDiff(curDay.date, endSpDate);
+                if (result.lenght !== 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var curRes = result[i];
 
-                            if (numberDay >= 0 && numberDay >= dayMinimum) {
-                                curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
+                        if (curRes.detail === undefined) {
+                            if (curRes.leave.morning && curRes.leave.afternoon) {
+                                curRes.detail = when + ' toute la journée';
+                            } else if (curRes.leave.morning) {
+                                curRes.detail = when + ' matin';
+                            } else {
+                                curRes.detail = when + ' après-midi';
                             }
-                            if (numberDay < dayMinimum) {
-                                result.splice(i, 1);
-                                i--;
+
+                            if (curRes.leave.end !== curDay.todayS) {
+                                var endSp = curRes.leave.end.split('-');
+                                var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
+                                var numberDay = dayDiff(curDay.date, endSpDate);
+
+                                if (numberDay >= 0 && numberDay >= dayMinimum) {
+                                    curRes.detail += ' et pendant ' + numberDay + ' jour(s)';
+                                }
+                                if (numberDay < dayMinimum) {
+                                    result.splice(i, 1);
+                                    i--;
+                                }
                             }
                         }
                     }
                 }
-            }
-            else {
-                result.push({
-                    name: 'Personne n\'',
-                    detail: when
-                });
-            }
-            functionCall(null, result);
-        }).catch(function (error) {
-            console.log(error);
-        });
-}
+                else {
+                    result.push({
+                        name: 'Personne n\'',
+                        detail: when
+                    });
+                }
+                functionCall(null, result);
+            }).catch(function (error) {
+                console.log(error);
+            });
+    }
 
-module.exports = request;
+    module.exports = request;
+})();
