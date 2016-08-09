@@ -41,7 +41,7 @@ var request = function (curDay) {
                 var curRes = result[i];
                 var endSp = curRes.leave.end.split('-');
                 var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-                var numberDay = dayDiff(curDay.date, endSpDate);
+                var numberDay = parseInt(dayDiff(curDay.date, endSpDate)) + 1;
 
                 if (curRes.leave.morning && curRes.leave.afternoon) {
                     curRes.detail = curDay.formatString;
@@ -56,7 +56,7 @@ var request = function (curDay) {
                     curRes.numberDay = numberDay;
                 }
                 else {
-                    curRes.numberDay = '0';
+                    curRes.numberDay = 0;
                 }
             }
 
