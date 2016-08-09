@@ -3,7 +3,7 @@
 var request = function (curDay, ignoreLeave) {
 
     var result = [];
-    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
+    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM]', {
         'headers': {
             'Authorization': 'lucca application=' + input.appToken
         }
@@ -29,7 +29,8 @@ var request = function (curDay, ignoreLeave) {
                 hash[username] = userleave;
                 result.push({
                     name: username,
-                    leave: userleave
+                    leave: userleave,
+                    departmentName: leave.leavePeriod.owner.department.name
                 });
             }
             if (leave.isAM) {
