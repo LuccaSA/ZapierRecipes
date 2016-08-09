@@ -18,24 +18,22 @@ var request = function (curDay) {
                 var leave = leaves[i];
                 var username = leave.leavePeriod.owner.name;
                 var userleave = hash[username];
-                if (!checkIsIn(result, username)) {
-                    if (!userleave) {
-                        userleave = {
-                            morning: false,
-                            afternoon: false,
-                            end: leave.leavePeriod.endsOn.split('T')[0]
-                        };
-                        hash[username] = userleave;
-                        result.push({
-                            name: username,
-                            leave: userleave
-                        });
-                    }
-                    if (leave.isAM) {
-                        userleave.morning = true;
-                    } else {
-                        userleave.afternoon = true;
-                    }
+                if (!userleave) {
+                    userleave = {
+                        morning: false,
+                        afternoon: false,
+                        end: leave.leavePeriod.endsOn.split('T')[0]
+                    };
+                    hash[username] = userleave;
+                    result.push({
+                        name: username,
+                        leave: userleave
+                    });
+                }
+                if (leave.isAM) {
+                    userleave.morning = true;
+                } else {
+                    userleave.afternoon = true;
                 }
             }
 
@@ -49,10 +47,8 @@ var request = function (curDay) {
                     curRes.detail = curDay.formatString;
                 } else if (curRes.leave.morning) {
                     curRes.detail = curDay.formatString + ' matin';
-                } else if (curRes.leave.afternoon){
-                    curRes.detail = curDay.formatString + ' après-midi';
                 } else {
-                    curRes.detail = curDay.formatString;
+                    curRes.detail = curDay.formatString + ' après-midi';
                 }
 
                 if (curRes.leave.end !== curRes.todayS) {
@@ -73,7 +69,7 @@ var request = function (curDay) {
             // Attention: la vérification avec le tableau des absents du jours n'a ici pas été encore mise en place
 
             for (var i = 0; i < result.length; i++) {
-                if (result[i].numberDay >= input.numberDayMinimum) {
+                if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(input.ignoreLeave, result[i].name)) {
                     messageSend += result[i].name + ' : à partir de ' + result[i].detail + '\n';
                 }
             }

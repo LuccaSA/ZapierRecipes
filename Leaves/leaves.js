@@ -16,11 +16,7 @@ function getUrlBase(params) {
 }
 
 var nextDay = getNextWorkingDate(input.offsetDays);
-var urlBase = input.url;
-var appToken = input.appToken;
+getAlreadyLeave();
 
-console.log(urlBase + '&date=' + nextDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]');
 
-// On lance la recherche pour J+1
 
-request(nextDay);

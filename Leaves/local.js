@@ -5,11 +5,12 @@ var input = {
     url: getUrlBase(process.argv[2]),
     appToken: process.argv[3],
     offsetDays: 2,
-    numberDayMinimum: 5
+    numberDayMinimum: 0
 };
 
 var callback = function (error, success) {
     console.log(success.message);
+    console.log(input.ignoreLeave);
 };
 
 // Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
