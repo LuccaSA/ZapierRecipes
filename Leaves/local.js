@@ -10,7 +10,6 @@ var input = {
 
 var callback = function (error, success) {
     console.log(success.message);
-    console.log(input.ignoreLeave);
 };
 
 // Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
@@ -29,4 +28,19 @@ if (process.argv.length !== 4) {
 if (process.argv[2] === '' || process.argv[3] === '') {
     console.log(errorEmptyParam);
     return;
+}
+
+function getUrlBase(params) {
+  if (!params) {
+    return null;
+  }
+  var endUrlBase = '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0';
+
+  if (!params.match('^https://')) {
+    params = 'https://' + params;
+  }
+  if (!params.match('(.ilucca.net)$')) {
+    params = params + '.ilucca.net';
+  }
+  return (params + endUrlBase);
 }

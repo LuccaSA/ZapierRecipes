@@ -1,5 +1,5 @@
 var getAlreadyLeave = function (nextDay) {
-  input.ignoreLeave = [];
+  var ignoreLeave = [];
 
   if (!input || !input.offsetDays || input.offsetDays <= 0) {
     request(nextDay);
@@ -23,12 +23,12 @@ var getAlreadyLeave = function (nextDay) {
       var leaves = data.data.items;
 
       for (var i = 0; i < leaves.length; i++) {
-        if (!checkIsIn(input.ignoreLeave, leaves[i].leavePeriod.owner.name)) {
-          input.ignoreLeave.push(leaves[i].leavePeriod.owner.name);
+        if (!checkIsIn(ignoreLeave, leaves[i].leavePeriod.owner.name)) {
+          ignoreLeave.push(leaves[i].leavePeriod.owner.name);
         }
       }
 
-      request(nextDay);
+      request(nextDay, ignoreLeave);
     }).catch(function (error) {
       console.log(error);
     });

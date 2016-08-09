@@ -1,14 +1,13 @@
 // Fichier de demande de requêtes
 
-var request = function (curDay) {
+var request = function (curDay, ignoreLeave) {
 
     var result = [];
     fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
         'headers': {
             'Authorization': 'lucca application=' + input.appToken
         }
-    })
-        .then(function (res) {
+    }).then(function (res) {
             return res.json();
         }).then(function (data) {
             console.log(data);
@@ -69,7 +68,7 @@ var request = function (curDay) {
             // Attention: la vérification avec le tableau des absents du jours n'a ici pas été encore mise en place
 
             for (var i = 0; i < result.length; i++) {
-                if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(input.ignoreLeave, result[i].name)) {
+                if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(ignoreLeave, result[i].name)) {
                     messageSend += result[i].name + ' : à partir de ' + result[i].detail + '\n';
                 }
             }
