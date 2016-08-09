@@ -5,7 +5,7 @@ var input = {
     url: getUrlBase(process.argv[2]),
     appToken: process.argv[3],
     offsetDays: 2,
-    numberDayMinimum: 0
+    numberDayMinimum: 5
 };
 
 var callback = function (error, success) {

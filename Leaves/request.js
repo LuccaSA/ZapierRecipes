@@ -1,6 +1,5 @@
 // Fichier de demande de requêtes
 
-var request = function (functionCall, curDay) {
 var request = function (curDay) {
 
     var result = [];
@@ -44,13 +43,13 @@ var request = function (curDay) {
                 var curRes = result[i];
                 var endSp = curRes.leave.end.split('-');
                 var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-                var numberDay = dayDiff(curDay.date, endSpDate) + 1;
+                var numberDay = dayDiff(curDay.date, endSpDate);
 
                 if (curRes.leave.morning && curRes.leave.afternoon) {
                     curRes.detail = curDay.formatString;
-                } else if (curRes.leave.morning && numberDay === 0) {
+                } else if (curRes.leave.morning) {
                     curRes.detail = curDay.formatString + ' matin';
-                } else if (curRes.leave.afternoon && numberDay === 0){
+                } else if (curRes.leave.afternoon){
                     curRes.detail = curDay.formatString + ' après-midi';
                 } else {
                     curRes.detail = curDay.formatString;
@@ -75,7 +74,7 @@ var request = function (curDay) {
 
             for (var i = 0; i < result.length; i++) {
                 if (result[i].numberDay >= input.numberDayMinimum) {
-                    messageSend += result[i].name + ' sera absent(e) ' + result[i].detail + '\n';
+                    messageSend += result[i].name + ' : à partir de ' + result[i].detail + '\n';
                 }
             }
 
@@ -83,7 +82,6 @@ var request = function (curDay) {
                 message: messageSend
             };
 
-            functionCall(null, resultSend);
             callback(null, resultSend);
         }).catch(function (error) {
             console.log(error);
