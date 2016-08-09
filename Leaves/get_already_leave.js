@@ -1,4 +1,4 @@
-var getAlreadyLeave = function () {
+var getAlreadyLeave = function (nextDay) {
   input.ignoreLeave = [];
 
   if (!input || !input.offsetDays || input.offsetDays <= 0) {

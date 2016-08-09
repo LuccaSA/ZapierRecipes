@@ -4,7 +4,9 @@ var getNextWorkingDate = function (offsetDays) {
 
     // Création de toutes les variables pour la date.
 
-    console.log(offsetDays);
+    if (!offsetDays) {
+        return null;
+    }
 
     var day = new Date();
     var nextDay = {};
