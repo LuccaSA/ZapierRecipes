@@ -64,28 +64,7 @@ var request = function (curDay, ignoreLeave) {
                 curRes.numberDay = 0;
             }
         }
-
-        var messageSend = '';
-
-        if (result.length === 0) {
-            messageSend += 'Personne ne sera absent ' + curDay.formatString;
-        }
-
-        // Seulement les personnes qui ne sont pas dans la liste des ignorés et qui on un nombre de jours d'absences suffisant sont affichés
-
-        else {
-            for (var i = 0; i < result.length; i++) {
-                if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(ignoreLeave, result[i].name)) {
-                    messageSend += result[i].name + ' : à partir de ' + result[i].detail + '\n';
-                }
-            }
-        }
-
-        var resultSend = {
-            message: messageSend
-        };
-
-        callback(null, resultSend);
+        sendResult(result, ignoreLeave);
     }).catch(function (error) {
         console.log(error);
     });

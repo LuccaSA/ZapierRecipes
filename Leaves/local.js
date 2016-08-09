@@ -6,12 +6,11 @@ var input = {
     url: getUrlBase(process.argv[2]),
     appToken: process.argv[3],
     offsetDays: 2,
-    numberDayMinimum: 0,
-    validDepartment: 'Paris,Tours,Nantes'
+    numberDayMinimum: 0
 };
 
 var callback = function (error, success) {
-    console.log(success.message);
+    console.log(success);
 };
 
 var errorNotEnoughtParam = 'erreur: besoin de deux arguments (url et token).';
