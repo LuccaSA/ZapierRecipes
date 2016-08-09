@@ -1,3 +1,6 @@
+// Fonction qui liste les absents à ignorer et lance la fonction request 
+// (les absents ignorés sont les absents du jour si on ne cherche pas pour aujourd'hui)
+
 var getAlreadyLeave = function (nextDay) {
   var ignoreLeave = [];
 

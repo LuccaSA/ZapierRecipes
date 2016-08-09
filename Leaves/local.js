@@ -1,3 +1,4 @@
+// Fichier de variable pour l'utilisation en locale
 
 var fetch = require('../node_modules/node-fetch');
 
@@ -12,35 +13,34 @@ var callback = function (error, success) {
     console.log(success.message);
 };
 
-// Variable de message d'erreur. (PAS BESOIN DE LE METTRE DANS LA RECETTE)
 var errorNotEnoughtParam = 'erreur: besoin de deux arguments (url et token).';
 var errorEmptyParam = 'erreur: l\'un des arguments et vide.';
 
-// Vérification du bon nombre de paramètres.
+// Vérification pour les paramètres envoyée en locale
 
 if (process.argv.length !== 4) {
     console.log(errorNotEnoughtParam);
     return;
 }
 
-// Vérification que les paramètres ne sont pas vide.
-
 if (process.argv[2] === '' || process.argv[3] === '') {
     console.log(errorEmptyParam);
     return;
 }
 
-function getUrlBase(params) {
-  if (!params) {
-    return null;
-  }
-  var endUrlBase = '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0';
+// Fonction qui permet de retourner une url v3
 
-  if (!params.match('^https://')) {
-    params = 'https://' + params;
-  }
-  if (!params.match('(.ilucca.net)$')) {
-    params = params + '.ilucca.net';
-  }
-  return (params + endUrlBase);
+function getUrlBase(params) {
+    if (!params) {
+        return null;
+    }
+    var endUrlBase = '/api/v3/leaves?leavePeriod.ownerId=greaterthan,0';
+
+    if (!params.match('^https://')) {
+        params = 'https://' + params;
+    }
+    if (!params.match('(.ilucca.net)$')) {
+        params = params + '.ilucca.net';
+    }
+    return (params + endUrlBase);
 }
