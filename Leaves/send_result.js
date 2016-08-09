@@ -5,7 +5,6 @@ var sendResult = function (result, ignoreLeave) {
 
   res.list = [];
   res.zapierLimitSize = 25;
-  res.validDepartmentList = [];
   if (input && input.validDepartment !== undefined) {
     res.validDepartmentList = input.validDepartment.split(',');
   }
@@ -20,9 +19,11 @@ var sendResult = function (result, ignoreLeave) {
   }
 
   res.channelAdd = function (channelName) {
-    if (channelName && this.list.length < this.zapierLimitSize && !this.channelExist(channelName)) {
+    var tmpChannelName = channelName.toLocaleLowerCase();
+
+    if (channelName && this.list.length < this.zapierLimitSize && !this.channelExist(tmpChannelName)) {
       var newElem = {};
-      newElem.channel = channelName;
+      newElem.channel = tmpChannelName;
       newElem.message = '';
 
       this.list.push(newElem);
@@ -34,7 +35,7 @@ var sendResult = function (result, ignoreLeave) {
       this.channelAdd(channelName);
 
       for (index in this.list) {
-        if (channelName && this.list[index].channel === channelName) {
+        if (channelName && this.list[index].channel === channelName.toLocaleLowerCase()) {
           this.list[index].message += message;
           break;
         }
@@ -47,7 +48,7 @@ var sendResult = function (result, ignoreLeave) {
       this.listAddMessage(channelName, message);
     }
     else {
-      for (index in this.validDepartmentList) {
+      for (var index = 0; index < this.validDepartmentList; index) {
         if (this.validDepartmentList[index] === channelName) {
           this.listAddMessage(channelName, message);
         }
@@ -60,7 +61,6 @@ var sendResult = function (result, ignoreLeave) {
       if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(ignoreLeave, result[i].name)) {
         var messageTmp = result[i].name + ' : à partir de ' + result[i].detail + '\n';
 
-        console.log(messageTmp);
         res.listAddMessageFilter(result[i].departmentName, messageTmp);
       }
     }
