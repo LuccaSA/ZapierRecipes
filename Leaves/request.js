@@ -1,6 +1,7 @@
 // Fichier de demande de requêtes
 
 var request = function (functionCall, curDay) {
+var request = function (curDay) {
 
     var result = [];
     fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,endsOn,endsAM]', {
@@ -83,6 +84,7 @@ var request = function (functionCall, curDay) {
             };
 
             functionCall(null, resultSend);
+            callback(null, resultSend);
         }).catch(function (error) {
             console.log(error);
         });

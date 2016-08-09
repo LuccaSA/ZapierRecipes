@@ -23,4 +23,4 @@ console.log(urlBase + '&date=' + nextDay.todayS + '&fields=isAM,leavePeriod[owne
 
 // On lance la recherche pour J+1
 
-request(callback, nextDay);
+request(nextDay);
