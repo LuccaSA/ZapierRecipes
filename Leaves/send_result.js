@@ -56,7 +56,7 @@ var sendResult = function (result, ignoreLeave) {
 
   res.listAddMessageFilter = function (channelName, message) {
     channelName = channelName.toLocaleLowerCase();
-    if (this.validDepartmentList === undefined) {
+    if (this.validDepartmentList === undefined || this.validDepartmentList === "") {
       this.listAddMessage(channelName, message);
     }
     else {
