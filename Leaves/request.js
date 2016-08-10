@@ -1,9 +1,11 @@
 // Fichier de demande de requêtes
 
 var request = function (curDay, ignoreLeave) {
+var request = function (curDay) {
 
     var result = [];
     fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM]', {
+    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM,startsOn]', {
         'headers': {
             'Authorization': 'lucca application=' + input.appToken
         }
@@ -27,10 +29,13 @@ var request = function (curDay, ignoreLeave) {
                     end: leave.leavePeriod.endsOn.split('T')[0]
                 };
                 hash[username] = userleave;
+                if (leave.leavePeriod.startsOn.split('T')[0] === curDay.todayS) {
                 result.push({
                     name: username,
                     leave: userleave,
                     departmentName: leave.leavePeriod.owner.department.name
+                        departmentName: leave.leavePeriod.owner.department.name,
+                        departmentId: leave.leavePeriod.owner.department.id
                 });
             }
             if (leave.isAM) {
@@ -65,6 +70,7 @@ var request = function (curDay, ignoreLeave) {
             }
         }
         sendResult(result, ignoreLeave);
+        sendResult(result);
     }).catch(function (error) {
         console.log(error);
     });

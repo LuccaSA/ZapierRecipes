@@ -1,12 +1,12 @@
 // Fonction qui permet de traiter le resultat recuperer avec la requête pour pouvoir envoyer le résultats
 
-var getCleanChannelName = function(channelName) {
+var getCleanChannelName = function (channelName) {
   channelName = channelName.replace(/\s+/g, '_');
   channelName = 'absence_' + channelName.toLocaleLowerCase();
   return channelName;
 }
 
-var sendResult = function (result, ignoreLeave) {
+var sendResult = function (result) {
   var res = {};
 
   res.list = [];
@@ -70,7 +70,7 @@ var sendResult = function (result, ignoreLeave) {
 
   if (result !== undefined) {
     for (var i = 0; i < result.length; i++) {
-      if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(ignoreLeave, result[i].name)) {
+      if (result[i].numberDay >= input.numberDayMinimum) {
         var messageTmp = result[i].name + ' : à partir de ' + result[i].detail + '\n';
         var channelName = getCleanChannelName(result[i].departmentName)
 

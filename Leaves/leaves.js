@@ -11,7 +11,7 @@ if (input && nextDay) {
     input.offsetDays = 0;
   }
 
-  getAlreadyLeave(nextDay);
+  request(nextDay);
 }
 
 

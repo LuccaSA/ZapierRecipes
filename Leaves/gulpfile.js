@@ -4,7 +4,6 @@ var concat = require('gulp-concat');
 var concatFileNameLocal = 'leaves_local.js'
 var filesNamesLocal = [
     './send_result.js',    
-    './get_already_leave.js',
     './day_diff.js',
     './check_is_in.js',
     './request.js',
@@ -22,7 +21,6 @@ gulp.task('build-local', function () {
 var concatFileNameZapier = 'leaves_zapier.js'
 var filesNamesZapier = [
     './send_result.js',
-    './get_already_leave.js',
     './day_diff.js',
     './check_is_in.js',
     './request.js',
