@@ -68,6 +68,11 @@ var request = function (curDay) {
             else {
                 curRes.numberDay = 0;
             }
+
+            var planningLink = 'https://' + input.url.split('/')[2] + '/figgo/planning#/department=' + curRes.departmentId;
+
+            planningLink += "&department=" + curRes.departmentId;
+            curRes.detail += ' (' + planningLink + ')';
         }
         sendResult(result, ignoreLeave);
         sendResult(result);
