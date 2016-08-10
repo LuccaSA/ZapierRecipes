@@ -61,11 +61,24 @@ var request = function (curDay) {
                 curRes.detail = curDay.formatString + ' après-midi';
             }
 
-            if (curRes.leave.end !== curRes.todayS) {
-                curRes.detail += ' pendant ' + numberDay + ' jours';
+            if (curRes.leave.end !== curRes.todayS && numberDay !== 0) {
+                if (numberDay < 7) {
+                    curRes.detail += ' pendant ' + numberDay;
+                    curRes.detail += numberDay > 1 ? ' jours' : ' jour';
+                }
+                else {
+                    var nbrWeek = Math.trunc(numberDay / 7);
+                    if (numberDay - nbrWeek * 7 > 0) {
+                        nbrWeek += 1;
+                    }
+
+                    curRes.detail += ' pendant ' + nbrWeek;
+                    curRes.detail += nbrWeek > 1 ? ' semaines' : ' semaine';
+                }
                 curRes.numberDay = numberDay;
             }
             else {
+                curRes.detail += ' pendant 1 jour';
                 curRes.numberDay = 0;
             }
 
