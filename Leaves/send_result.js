@@ -5,6 +5,9 @@ var sendResult = function (result, ignoreLeave) {
 
   res.list = [];
   res.zapierLimitSize = 25;
+  if (input.validDepartment) {
+    res.validDepartmentList = input.validDepartment.split(',');
+  }
 
   res.channelExist = function (channelName) {
     channelName = channelName.toLocaleLowerCase();
@@ -47,7 +50,7 @@ var sendResult = function (result, ignoreLeave) {
       this.listAddMessage(channelName, message);
     }
     else {
-      for (index in this.validDepartmentList) {
+      for (var index = 0; index < this.validDepartmentList.length; index++) {
         if (this.validDepartmentList[index] === channelName) {
           this.listAddMessage(channelName, message);
         }
