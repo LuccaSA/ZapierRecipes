@@ -21,7 +21,7 @@ var sendResult = function (result, ignoreLeave) {
 
   res.channelExist = function (channelName) {
     channelName = channelName.toLocaleLowerCase();
-    for (index in this.list) {
+    for (var index = 0; index < this.list.length; index++) {
       if (channelName && this.list[index].channel && channelName === this.list[index].channel) {
         return true;
       }
@@ -45,7 +45,7 @@ var sendResult = function (result, ignoreLeave) {
     if (this.list.length < this.zapierLimitSize) {
       this.channelAdd(channelName);
 
-      for (index in this.list) {
+      for (var index = 0; index < this.list.length; index++) {
         if (channelName && this.list[index].channel === channelName) {
           this.list[index].message += message;
           break;
