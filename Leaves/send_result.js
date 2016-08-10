@@ -1,5 +1,11 @@
 // Fonction qui permet de traiter le resultat recuperer avec la requête pour pouvoir envoyer le résultats
 
+var getCleanChannelName = function(channelName) {
+  channelName = channelName.replace(/\s+/g, '_');
+  channelName = 'absence_' + channelName.toLocaleLowerCase();
+  return channelName;
+}
+
 var sendResult = function (result, ignoreLeave) {
   var res = {};
 
@@ -7,6 +13,10 @@ var sendResult = function (result, ignoreLeave) {
   res.zapierLimitSize = 25;
   if (input.validDepartment) {
     res.validDepartmentList = input.validDepartment.toLocaleLowerCase().split(',');
+    for (var i = 0; i < res.validDepartmentList.length; i++) {
+      res.validDepartmentList[i] = getCleanChannelName(res.validDepartmentList[i]);
+    }
+    console.log(res.validDepartmentList);
   }
 
   res.channelExist = function (channelName) {
@@ -62,11 +72,13 @@ var sendResult = function (result, ignoreLeave) {
     for (var i = 0; i < result.length; i++) {
       if (result[i].numberDay >= input.numberDayMinimum && !checkIsIn(ignoreLeave, result[i].name)) {
         var messageTmp = result[i].name + ' : à partir de ' + result[i].detail + '\n';
+        var channelName = getCleanChannelName(result[i].departmentName)
 
-        res.listAddMessageFilter(result[i].departmentName, messageTmp);
+        console.log(channelName);
+        res.listAddMessageFilter(channelName, messageTmp);
       }
     }
   }
 
   callback(null, res.list);
-}
+} 
