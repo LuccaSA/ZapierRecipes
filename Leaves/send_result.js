@@ -6,7 +6,7 @@ var sendResult = function (result, ignoreLeave) {
   res.list = [];
   res.zapierLimitSize = 25;
   if (input.validDepartment) {
-    res.validDepartmentList = input.validDepartment.split(',');
+    res.validDepartmentList = input.validDepartment.toLocaleLowerCase().split(',');
   }
 
   res.channelExist = function (channelName) {
