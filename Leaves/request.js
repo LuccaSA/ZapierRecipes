@@ -1,10 +1,8 @@
 // Fichier de demande de requêtes
 
-var request = function (curDay, ignoreLeave) {
 var request = function (curDay) {
 
     var result = [];
-    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM]', {
     fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM,startsOn]', {
         'headers': {
             'Authorization': 'lucca application=' + input.appToken
@@ -33,7 +31,6 @@ var request = function (curDay) {
                 result.push({
                     name: username,
                     leave: userleave,
-                    departmentName: leave.leavePeriod.owner.department.name
                         departmentName: leave.leavePeriod.owner.department.name,
                         departmentId: leave.leavePeriod.owner.department.id
                 });
@@ -87,7 +84,6 @@ var request = function (curDay) {
             planningLink += "&department=" + curRes.departmentId;
             curRes.detail += ' (' + planningLink + ')';
         }
-        sendResult(result, ignoreLeave);
         sendResult(result);
     }).catch(function (error) {
         console.log(error);
