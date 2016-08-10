@@ -5,11 +5,9 @@ var sendResult = function (result, ignoreLeave) {
 
   res.list = [];
   res.zapierLimitSize = 25;
-  if (input && input.validDepartment !== undefined) {
-    res.validDepartmentList = input.validDepartment.split(',');
-  }
 
   res.channelExist = function (channelName) {
+    channelName = channelName.toLocaleLowerCase();
     for (index in this.list) {
       if (channelName && this.list[index].channel && channelName === this.list[index].channel) {
         return true;
@@ -19,11 +17,10 @@ var sendResult = function (result, ignoreLeave) {
   }
 
   res.channelAdd = function (channelName) {
-    var tmpChannelName = channelName.toLocaleLowerCase();
-
-    if (channelName && this.list.length < this.zapierLimitSize && !this.channelExist(tmpChannelName)) {
+    channelName = channelName.toLocaleLowerCase();
+    if (channelName && this.list.length < this.zapierLimitSize && !this.channelExist(channelName)) {
       var newElem = {};
-      newElem.channel = tmpChannelName;
+      newElem.channel = channelName;
       newElem.message = '';
 
       this.list.push(newElem);
@@ -31,11 +28,12 @@ var sendResult = function (result, ignoreLeave) {
   }
 
   res.listAddMessage = function (channelName, message) {
+    channelName = channelName.toLocaleLowerCase();
     if (this.list.length < this.zapierLimitSize) {
       this.channelAdd(channelName);
 
       for (index in this.list) {
-        if (channelName && this.list[index].channel === channelName.toLocaleLowerCase()) {
+        if (channelName && this.list[index].channel === channelName) {
           this.list[index].message += message;
           break;
         }
@@ -44,11 +42,12 @@ var sendResult = function (result, ignoreLeave) {
   }
 
   res.listAddMessageFilter = function (channelName, message) {
-    if (this.validDepartmentList === undefined || this.validDepartmentList.length === 0) {
+    channelName = channelName.toLocaleLowerCase();
+    if (this.validDepartmentList === undefined) {
       this.listAddMessage(channelName, message);
     }
     else {
-      for (var index = 0; index < this.validDepartmentList; index) {
+      for (index in this.validDepartmentList) {
         if (this.validDepartmentList[index] === channelName) {
           this.listAddMessage(channelName, message);
         }

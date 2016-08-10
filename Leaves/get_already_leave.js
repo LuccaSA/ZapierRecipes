@@ -5,7 +5,7 @@ var getAlreadyLeave = function (nextDay) {
   var ignoreLeave = [];
 
   if (!input || !input.offsetDays || input.offsetDays <= 0) {
-    request(nextDay);
+    request(nextDay, ignoreLeave);
   }
 
   else {
