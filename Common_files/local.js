@@ -5,9 +5,8 @@ var fetch = require('../node_modules/node-fetch');
 var input = {
     url: getUrlBase(process.argv[2]),
     appToken: process.argv[3],
-    offsetDays: 2,
+    offsetDays: 3,
     numberDayMinimum: 0,
-    validDepartment: 'customer_success,channels,sales'
 };
 
 var callback = function (error, success) {

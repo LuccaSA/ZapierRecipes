@@ -27,13 +27,15 @@ var request = function (curDay) {
                     end: leave.leavePeriod.endsOn.split('T')[0]
                 };
                 hash[username] = userleave;
+                console.log(leave.leavePeriod.startsOn.split('T')[0]);
                 if (leave.leavePeriod.startsOn.split('T')[0] === curDay.todayS) {
-                result.push({
-                    name: username,
-                    leave: userleave,
+                    result.push({
+                        name: username,
+                        leave: userleave,
                         departmentName: leave.leavePeriod.owner.department.name,
                         departmentId: leave.leavePeriod.owner.department.id
-                });
+                    });
+                }
             }
             if (leave.isAM) {
                 userleave.morning = true;
