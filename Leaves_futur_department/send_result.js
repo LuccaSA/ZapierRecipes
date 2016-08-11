@@ -6,7 +6,7 @@ var getCleanChannelName = function (channelName) {
   return channelName;
 }
 
-var sendResult = function (result) {
+var sendResult = function (results) {
   var res = {};
 
   res.list = [];
@@ -68,13 +68,12 @@ var sendResult = function (result) {
     }
   }
 
-  if (result !== undefined) {
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].numberDay >= input.numberDayMinimum) {
-        var messageTmp = result[i].name + ' : à partir de ' + result[i].detail + '\n';
-        var channelName = getCleanChannelName(result[i].departmentName)
+  if (results !== undefined) {
+    for (var i = 0; i < results.length; i++) {
+      if (results[i].numberDay >= input.numberDayMinimum) {
+        var messageTmp = results[i].name + ' : à partir de ' + results[i].detail + '\n';
+        var channelName = getCleanChannelName(results[i].departmentName)
 
-        console.log(channelName);
         res.listAddMessageFilter(channelName, messageTmp);
       }
     }

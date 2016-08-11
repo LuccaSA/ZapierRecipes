@@ -1,9 +1,9 @@
 // Fichier de demande de requêtes
 
-var request = function (curDay) {
+var request = function (thisDay) {
 
-    var result = [];
-    fetch(input.url + '&date=' + curDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM,startsOn]', {
+    var results = [];
+    fetch(input.url + '&date=' + thisDay.todayS + '&fields=isAM,leavePeriod[owner.name,owner.department,endsOn,endsAM,startsOn]', {
         'headers': {
             'Authorization': 'lucca application=' + input.appToken
         }
@@ -28,8 +28,8 @@ var request = function (curDay) {
                 };
                 hash[username] = userleave;
                 console.log(leave.leavePeriod.startsOn.split('T')[0]);
-                if (leave.leavePeriod.startsOn.split('T')[0] === curDay.todayS) {
-                    result.push({
+                if (leave.leavePeriod.startsOn.split('T')[0] === thisDay.todayS) {
+                    results.push({
                         name: username,
                         leave: userleave,
                         departmentName: leave.leavePeriod.owner.department.name,
@@ -46,18 +46,18 @@ var request = function (curDay) {
 
         // Créé les messages de sortie pour chacun des absents
 
-        for (var i = 0; i < result.length; i++) {
-            var curRes = result[i];
+        for (var i = 0; i < results.length; i++) {
+            var curRes = results[i];
             var endSp = curRes.leave.end.split('-');
             var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
-            var numberDay = parseInt(dayDiff(curDay.date, endSpDate)) + 1;
+            var numberDay = parseInt(dayDiff(thisDay.date, endSpDate)) + 1;
 
             if (curRes.leave.morning && curRes.leave.afternoon) {
-                curRes.detail = curDay.formatString;
+                curRes.detail = thisDay.formatString;
             } else if (curRes.leave.morning) {
-                curRes.detail = curDay.formatString + ' matin';
+                curRes.detail = thisDay.formatString + ' matin';
             } else {
-                curRes.detail = curDay.formatString + ' après-midi';
+                curRes.detail = thisDay.formatString + ' après-midi';
             }
 
             if (curRes.leave.end !== curRes.todayS && numberDay !== 0) {
@@ -85,7 +85,7 @@ var request = function (curDay) {
             planningLink += "&department=" + curRes.departmentId;
             curRes.detail += ' (' + planningLink + ')';
         }
-        sendResult(result);
+        sendresults(results);
     }).catch(function (error) {
         console.log(error);
     });

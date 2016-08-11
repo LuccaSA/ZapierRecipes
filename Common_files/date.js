@@ -18,7 +18,7 @@ var getNextWorkingDate = function (offsetDays) {
         }
     }
 
-    var array = {
+    var weekDays = {
         'Mon': 'lundi',
         'Tue': 'mardi',
         'Wed': 'mercredi',
@@ -34,6 +34,6 @@ var getNextWorkingDate = function (offsetDays) {
     nextDay.monthS = nextDay.month > 9 ? '' + nextDay.month : '0' + nextDay.month;
     nextDay.dayS = day.getDate() > 9 ? '' + day.getDate() : '0' + day.getDate();
     nextDay.todayS = nextDay.yearS + '-' + nextDay.monthS + '-' + nextDay.dayS;
-    nextDay.formatString = array[day.toDateString().split(' ')[0]];
+    nextDay.formatString = weekDays[day.toDateString().split(' ')[0]];
     return nextDay;
 };

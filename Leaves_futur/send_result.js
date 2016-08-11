@@ -1,14 +1,14 @@
 // Fonction qui permet de traiter le resultat recuperer avec la requête pour pouvoir envoyer le résultats
 
-var sendResult = function (result) {
+var sendResult = function (results) {
   var res = {};
 
-  if (result !== undefined) {
+  if (results !== undefined) {
     res.message = "";
 
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].numberDay >= input.numberDayMinimum) {
-        res.message += result[i].name + ' : à partir de ' + result[i].detail + '\n';
+    for (var i = 0; i < results.length; i++) {
+      if (results[i].numberDay >= input.numberDayMinimum) {
+        res.message += results[i].name + ' : à partir de ' + results[i].detail + '\n';
       }
     }
   }
