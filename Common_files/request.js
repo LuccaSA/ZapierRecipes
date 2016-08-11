@@ -85,7 +85,7 @@ var request = function (thisDay) {
             planningLink += "&department=" + curRes.departmentId;
             curRes.detail += ' (' + planningLink + ')';
         }
-        sendresults(results);
+        sendResult(results);
     }).catch(function (error) {
         console.log(error);
     });
