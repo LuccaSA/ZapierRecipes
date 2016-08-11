@@ -5,21 +5,21 @@ var concatFileNameLocal = 'leaves_local.js'
 var concatFileNameLocalDepartment = 'leaves_local_department.js'
 var filesNamesLocal = [
     './Leaves_futur/send_result.js',
-    './Common_file/day_diff.js',
-    './Common_file/check_is_in.js',
-    './Common_file/request.js',
-    './Common_file/local.js',
-    './Common_file/date.js',
-    './Common_file/leaves.js'
+    './Common_files/day_diff.js',
+    './Common_files/check_is_in.js',
+    './Common_files/request.js',
+    './Common_files/local.js',
+    './Common_files/date.js',
+    './Common_files/leaves.js'
 ];
 var filesNamesLocalDepartment = [
     './Leaves_futur_department/send_result.js',
-    './Common_file/day_diff.js',
-    './Common_file/check_is_in.js',
-    './Common_file/request.js',
-    './Common_file/local.js',
-    './Common_file/date.js',
-    './Common_file/leaves.js'
+    './Common_files/day_diff.js',
+    './Common_files/check_is_in.js',
+    './Common_files/request.js',
+    './Common_files/local.js',
+    './Common_files/date.js',
+    './Common_files/leaves.js'
 ];
 
 gulp.task('build-local', function () {
@@ -35,19 +35,19 @@ var concatFileNameZapier = 'leaves_zapier.js'
 var concatFileNameZapierDepartment = 'leaves_zapier_department.js'
 var filesNamesZapier = [
     './Leaves_futur/send_result.js',
-    './Common_file/day_diff.js',
-    './Common_file/check_is_in.js',
-    './Common_file/request.js',
-    './Common_file/date.js',
-    './Common_file/leaves.js'
+    './Common_files/day_diff.js',
+    './Common_files/check_is_in.js',
+    './Common_files/request.js',
+    './Common_files/date.js',
+    './Common_files/leaves.js'
 ];
 var filesNamesZapierDepartment = [
     './Leaves_futur_department/send_result.js',
-    './Common_file/day_diff.js',
-    './Common_file/check_is_in.js',
-    './Common_file/request.js',
-    './Common_file/date.js',
-    './Common_file/leaves.js'
+    './Common_files/day_diff.js',
+    './Common_files/check_is_in.js',
+    './Common_files/request.js',
+    './Common_files/date.js',
+    './Common_files/leaves.js'
 ];
 
 gulp.task('build-zapier', function () {
