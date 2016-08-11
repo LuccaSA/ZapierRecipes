@@ -64,7 +64,6 @@ var request = function (curDay) {
                     curRes.detail += numberDay > 1 ? ' jours' : ' jour';
                 }
                 else {
-                    var nbrWeek = Math.trunc(numberDay / 7);
                     var nbrWeek = (numberDay / 7) >> 0;
                     if (numberDay - nbrWeek * 7 > 0) {
                         nbrWeek += 1;
@@ -76,7 +75,6 @@ var request = function (curDay) {
                 curRes.numberDay = numberDay;
             }
             else {
-                curRes.detail += ' pendant 1 jour';
                 curRes.numberDay = 0;
             }
 
