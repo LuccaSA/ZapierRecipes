@@ -65,6 +65,7 @@ var request = function (curDay) {
                 }
                 else {
                     var nbrWeek = Math.trunc(numberDay / 7);
+                    var nbrWeek = (numberDay / 7) >> 0;
                     if (numberDay - nbrWeek * 7 > 0) {
                         nbrWeek += 1;
                     }
