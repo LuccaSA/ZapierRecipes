@@ -3,14 +3,14 @@
 var sendResult = function (results) {
   var res = {};
 
-  if (results !== undefined) {
+  if (results) {
     res.message = "";
 
-    for (var i = 0; i < results.length; i++) {
-      if (results[i].numberDay >= input.numberDayMinimum) {
-        res.message += results[i].name + ' : à partir de ' + results[i].detail + '\n';
+    results.map(function (result) {
+      if (result >= input.numberDayMinimum) {
+        res.message += result.name + ' : à partir de ' + result.detail + '\n';
       }
-    }
+    });
   }
 
   callback(null, res);

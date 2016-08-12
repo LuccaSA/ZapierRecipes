@@ -16,8 +16,7 @@ var request = function (thisDay) {
 
         // Liste tous les absents à J+input.offsetDays
 
-        for (var i = 0; i < leaves.length; i++) {
-            var leave = leaves[i];
+        leaves.map(function (leave) {
             var username = leave.leavePeriod.owner.name;
             var userleave = hash[username];
             if (!userleave) {
@@ -42,12 +41,11 @@ var request = function (thisDay) {
             } else {
                 userleave.afternoon = true;
             }
-        }
+        });
 
         // Créé les messages de sortie pour chacun des absents
 
-        for (var i = 0; i < results.length; i++) {
-            var curRes = results[i];
+        results.map(function (curRes) {
             var endSp = curRes.leave.end.split('-');
             var endSpDate = new Date(endSp[0], endSp[1] - 1, endSp[2]);
             var numberDay = parseInt(dayDiff(thisDay.date, endSpDate)) + 1;
@@ -79,7 +77,8 @@ var request = function (thisDay) {
             else {
                 curRes.numberDay = 0;
             }
-        }
+        });
+
         sendResult(results);
     }).catch(function (error) {
         console.log(error);
