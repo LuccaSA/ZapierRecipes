@@ -1,7 +1,7 @@
 // Fonction qui permet de traiter le resultat recuperer avec la requête pour pouvoir envoyer le résultats
 
 var getCleanChannelName = function (channelName) {
-  channelName = channelName.replace(/\s+/g, '_');
+  channelName = channelName.replace(/\s+/g, '');
   channelName = 'absence_' + channelName.toLocaleLowerCase();
   return channelName;
 }
