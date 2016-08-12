@@ -71,7 +71,12 @@ var sendResult = function (results) {
   if (results !== undefined) {
     for (var i = 0; i < results.length; i++) {
       if (results[i].numberDay >= input.numberDayMinimum) {
-        var messageTmp = results[i].name + ' : à partir de ' + results[i].detail + '\n';
+        if (results[i].numberDay >= 2) {
+          var messageTmp = results[i].name + ' : à partir de ' + results[i].detail + '\n';
+        }
+        else {
+          var messageTmp = results[i].name + ' : ' + results[i].detail + '\n'; 
+        }
         var channelName = getCleanChannelName(results[i].departmentName)
 
         res.listAddMessageFilter(channelName, messageTmp);

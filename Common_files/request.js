@@ -60,7 +60,7 @@ var request = function (thisDay) {
                 curRes.detail = thisDay.formatString + ' après-midi';
             }
 
-            if (curRes.leave.end !== curRes.todayS && numberDay !== 0) {
+            if (curRes.leave.end !== curRes.todayS && numberDay >= 2) {
                 if (numberDay < 7) {
                     curRes.detail += ' pendant ' + numberDay;
                     curRes.detail += numberDay > 1 ? ' jours' : ' jour';
