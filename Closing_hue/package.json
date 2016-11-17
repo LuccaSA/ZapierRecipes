@@ -1,0 +1,16 @@
+{
+  "name": "closing_hue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "Cyrvan BOUCHARD",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.5.4",
+    "fetch": "^1.1.0",
+    "node-fetch": "^1.6.0"
+  }
+}
