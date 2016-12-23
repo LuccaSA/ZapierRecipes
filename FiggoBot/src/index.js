@@ -1,4 +1,10 @@
-var zapierToken = process.env.zapierToken;
+if (process.argv.length !== 4) {
+  console.log('Usage: gulp dev && node dist/build.js slack_token lucca_token');
+  return;
+}
+
+var slackToken = process.argv[2];
+var luccaToken = process.argv[3];
 ////////////////////////////
 
 var Botkit = require('botkit');
@@ -19,7 +25,7 @@ var isGoodDate = function (day, month, year) {
 
 // Lancement du bot
 controller.spawn({
-  token: process.env.token,
+  token: slackToken,
 }).startRTM()
 
 // Ecoute toutes expressions du type 'DD/MM/YYYY' et affiche le nombre d'absents et leur nom.
@@ -32,7 +38,7 @@ controller.hears('^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$', ['direct_message','
   slack.message = message;
   if (isGoodDate(dateMatch[1], dateMatch[2], dateMatch[3])) {
     var requestDate = dateMatch[3] + '-' + dateMatch[2] + '-' + dateMatch[1];
-    sendAbsentOnLuccaFormDateToSlack(requestDate, zapierToken, answerToSlackUser, slack);
+    sendAbsentOnLuccaFormDateToSlack(requestDate, luccaToken, answerToSlackUser, slack);
   }
 });
 
@@ -41,7 +47,7 @@ controller.hears('help', ['direct_message','direct_mention','mention'], function
   var helpMessage = ''
 
   helpMessage += 'Message d\'aide pour l\'utilisation du bot figgo\n';
-  helpMessage += '\n'
+  helpMessage += '\n';
   helpMessage += 'DD/MM/YYYY: renvoie le nombre d\'absents à la date donnée\n';
   helpMessage += 'everyoneavailable: renvoie la prochainne date ou tout le monde est présent\n';
   bot.reply(message, helpMessage);
@@ -57,14 +63,14 @@ controller.hears('everyoneavailable', ['direct_message','direct_mention','mentio
     bot.reply(message, responseMessage);
   };
 
-  var launchRequest = function (date, token) {
+  var launchRequest = function (date) {
     var fetch = require('node-fetch');
     var request_url = 'https://lucca.ilucca.net/api/leaves?date=';
 
     request_url += date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
     fetch(request_url, {
       'headers': {
-        'Authorization': 'lucca application=' + token
+        'Authorization': 'lucca application=' + luccaToken
       }
     })
     .then(res => res.json())
@@ -74,9 +80,9 @@ controller.hears('everyoneavailable', ['direct_message','direct_mention','mentio
           sendResult(date);
         } else {
           date.setDate(date.getDate() + 1);
-          launchRequest(date, token);
+          launchRequest(date);
         }
     }).catch(error => console.log(error));
   };
-  launchRequest(todayDate, zapierToken);
+  launchRequest(todayDate);
 });
