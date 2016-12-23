@@ -1,4 +1,10 @@
-var token = process.env.token;
+if (process.argv.length !== 4) {
+  console.log('Usage: node src/main.js token_channel_slack id_channel');
+  return;
+}
+
+var token = process.argv[2];
+var channel = process.argv[3];
 //////////////////////////////////////
 
 var stopColorLoop = function (bridgeLocalIp) {
@@ -26,16 +32,13 @@ var launchColorLoop = function (bridgeLocalIp) {
 var launchSlackListerner = function (bridgeLocalIp) {
     const SlackBot = require('slackbots');
 
-    const channel = 'C22UV12R5'; // It's the 'nouveau_closing' channel's id from the slackbutton slack team.
-    const text = 'nouveau_closing'; // The expected message to trigger the hue lamps
-
     // Create a bot
     var bot = new SlackBot({
         token: token
     });
 
     bot.on('message', function (data) {
-        if (data !== undefined && data.channel === channel && data.text === text) {
+        if (data !== undefined && data.channel === channel) {
             launchColorLoop(bridgeLocalIp);
         }
     });

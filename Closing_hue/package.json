@@ -4,9 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "node main.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Cyrvan BOUCHARD",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "slackbots": "^0.5.3"
