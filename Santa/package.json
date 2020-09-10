@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "botkit": "^0.4.5",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^2.6.1"
   }
 }
